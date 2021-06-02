@@ -5,19 +5,13 @@
   "author": "Luca Del Puppo",
   "license": "MIT",
   "private": true,
-  "workspaces": {
-    "packages": [
-      "packages/bootstrap",
-      "packages/welcome",
-      "packages/music"
-    ]
-  },
   "scripts": {
-    "dev:bootstrap": "yarn --cwd packages/bootstrap dev",
-    "build:bootstrap": "yarn --cwd packages/bootstrap build",
-    "dev:welcome": "yarn --cwd packages/welcome serve",
-    "build:welcome": "yarn --cwd packages/welcome build",
-    "dev:music": "yarn --cwd packages/music start",
-    "build:music": "yarn --cwd packages/music build"
+    "web-server": "cd packages/server && yarn start",
+    "dev:bootstrap": "cd packages/bootstrap && yarn dev",
+    "build:bootstrap": "cd packages/bootstrap && yarn build",
+    "dev:welcome": "cd packages/welcome && yarn serve",
+    "build:welcome": "cd packages/welcome && yarn build",
+    "dev:music": "cd packages/music && yarn start",
+    "build:music": "cd packages/music && yarn build"
   }
 }

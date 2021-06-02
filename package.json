@@ -1,0 +1,23 @@
+{
+  "name": "building-microfrontend",
+  "version": "1.0.0",
+  "repository": "git@github.com:Puppo/building-microfrontend.git",
+  "author": "Luca Del Puppo",
+  "license": "MIT",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/bootstrap",
+      "packages/welcome",
+      "packages/music"
+    ]
+  },
+  "scripts": {
+    "dev:bootstrap": "yarn --cwd packages/bootstrap dev",
+    "build:bootstrap": "yarn --cwd packages/bootstrap build",
+    "dev:welcome": "yarn --cwd packages/welcome serve",
+    "build:welcome": "yarn --cwd packages/welcome build",
+    "dev:music": "yarn --cwd packages/music start",
+    "build:music": "yarn --cwd packages/music build"
+  }
+}

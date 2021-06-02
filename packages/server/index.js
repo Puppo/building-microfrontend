@@ -8,6 +8,10 @@ app.use("/mfe/music", express.static("../music/build"));
 app.use("/mfe/welcome", express.static("../welcome/dist"));
 app.use("/", express.static("../bootstrap/dist"));
 
+app.all("/*", function (req, res) {
+  res.sendFile("index.html", { root: "../bootstrap/dist" });
+});
+
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () =>

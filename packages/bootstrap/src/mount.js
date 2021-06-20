@@ -1,3 +1,5 @@
+const CLASS_NAME = "mounted-by-bootstrap";
+
 function moveNodeToDocument(parent, document) {
   return function moveNode(node) {
     // Cloning or Adopting <scripts> nodes doesn't re-evaluate them
@@ -9,17 +11,25 @@ function moveNodeToDocument(parent, document) {
         clonedNode.setAttribute(attribute.name, attribute.value)
       );
       clonedNode.innerHTML = node.innerHTML;
-
+      clonedNode.classList.add(CLASS_NAME);
       parent.appendChild(clonedNode);
       return;
     }
 
     const adoptedNode = document.adoptNode(node);
+    adoptedNode.classList.add(CLASS_NAME);
     parent.appendChild(adoptedNode);
   };
 }
 
 function addOrUpdateBaseTag(microFrontendName) {
+  const [existingBaseElement] = document.getElementsByTagName("base");
+
+  if (existingBaseElement) {
+    existingBaseElement.setAttribute("href", `/mfe/${microFrontendName}/`);
+    return;
+  }
+
   const baseElement = document.createElement("base");
   baseElement.setAttribute("href", `/mfe/${microFrontendName}/`);
   document.head.appendChild(baseElement);
@@ -28,13 +38,27 @@ function addOrUpdateBaseTag(microFrontendName) {
 function mountMicroFrontendInPage(microFrontendName, microFrontendDocument) {
   addOrUpdateBaseTag(microFrontendName);
 
-  const microFrontendHeadNodes =
+  const microFrontendHeadElements =
     microFrontendDocument.querySelectorAll("head>*");
-  const microFrontendBodyNodes =
+  const microFrontendBodyElements =
     microFrontendDocument.querySelectorAll("body>*");
 
-  microFrontendHeadNodes.forEach(moveNodeToDocument(document.head, document));
-  microFrontendBodyNodes.forEach(moveNodeToDocument(document.body, document));
+  microFrontendHeadElements.forEach(
+    moveNodeToDocument(document.head, document)
+  );
+  microFrontendBodyElements.forEach(
+    moveNodeToDocument(document.body, document)
+  );
 }
 
-export default mountMicroFrontendInPage;
+function unmountMicroFrontendInPage() {
+  const microFrontendElements = document.querySelectorAll(`.${CLASS_NAME}`);
+
+  microFrontendElements.forEach(element => {
+    if (element.parentElement) {
+      element.parentElement.removeChild(element);
+    }
+  });
+}
+
+export { mountMicroFrontendInPage, unmountMicroFrontendInPage };
